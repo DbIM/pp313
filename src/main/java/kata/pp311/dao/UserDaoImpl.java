@@ -31,9 +31,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         entityManager.persist(user);
-        return user;
     }
 
     @Override
@@ -44,9 +43,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByName(String name) {
-        Query query = entityManager.createQuery("SELECT id FROM User WHERE name = :name");
+        Query query = entityManager.createQuery("FROM User WHERE username = :name");
         query.setParameter("name", name);
-        Long id = (Long) query.getResultList().get(0);
-        return entityManager.find(User.class, id);
+        return (User) query.getSingleResult();
     }
 }

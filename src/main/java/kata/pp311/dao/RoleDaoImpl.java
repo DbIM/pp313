@@ -1,5 +1,6 @@
 package kata.pp311.dao;
 
+import kata.pp311.model.User;
 import org.springframework.stereotype.Component;
 import kata.pp311.model.Role;
 
@@ -13,33 +14,7 @@ public class RoleDaoImpl implements RoleDao{
     EntityManager entityManager;
 
     @Override
-    public List<Role> getAll() {
-        return null;
-    }
-
-    @Override
-    public Role getById(long id) {
-        return null;
-    }
-
-    @Override
-    public Role getByName(String roleName) {
-        return null;
-    }
-
-    @Override
-    public Role save(Role role) {
+    public void save(Role role) {
         entityManager.persist(role);
-        return role;
-    }
-
-    @Override
-    public void delete(Role role) {
-
-    }
-
-    @Override
-    public void update(Role role) {
-
     }
 }

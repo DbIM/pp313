@@ -6,21 +6,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "increment")
     private Long id;
-    private String name;
+    @Column (name = "username", unique = true)
+    private String username;
+    @Column (name = "lastname")
     private String lastName;
+    @Column (name = "pass")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -30,8 +32,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String lastName, String password, Set<Role> roles) {
-        this.name = name;
+    public User(String username, String lastName, String password, Set<Role> roles) {
+        this.username = username;
         this.lastName = lastName;
         this.password = password;
         this.roles = roles;
@@ -46,11 +48,11 @@ public class User implements UserDetails {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String username) {
+        this.username = username;
     }
 
     public String getLastName() {
@@ -85,7 +87,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.username;
     }
 
     @Override

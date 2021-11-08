@@ -49,8 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/adminusers").hasAuthority("ADMIN")
-                .antMatchers("/users").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/admin/adminusers").hasAuthority("ADMIN")
+                .antMatchers("/admin/adduser").hasAuthority("ADMIN")
+                .antMatchers("/admin/updateuser").hasAuthority("ADMIN")
                 .antMatchers("/").permitAll() // доступность всем
                 .antMatchers("/login").permitAll() // доступность всем
                 .and().formLogin();
@@ -58,17 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoderF() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override

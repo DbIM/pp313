@@ -1,3 +1,0 @@
-REPLACE INTO jlpp.roles VALUES (1,'ADMIN');
-REPLACE INTO jlpp.users VALUES (1,'ADMIN','ADMIN','ADMIN');
-REPLACE INTO jlpp.user_role VALUES (1, 1);
