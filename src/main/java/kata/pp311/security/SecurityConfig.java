@@ -31,8 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
-        // конфигурация для прохождения аутентификации
-        //тут для аутентификации нам нужно чтобы юзердитейлс информацию передавал
     }
 
     @Override
@@ -41,12 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(new LoginSuccessHandler());
 
         http.logout()
-                // разрешаем делать логаут всем
                 .permitAll()
-                // указываем URL при удачном логауте
                 .logoutSuccessUrl("/login")
-                //.logoutSuccessUrl("http://localhost:8080/login")
-                //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
 
         http.authorizeRequests()
