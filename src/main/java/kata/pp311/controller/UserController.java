@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("")
 public class UserController {
-
 	@Autowired
 	UserService userService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage() {
 		return "login";
+	}
+
+	@RequestMapping(value = "/admin/logout", method = RequestMethod.GET)
+	public String logoutPage() {
+		return "admin/logout";
 	}
 
 	@GetMapping(value = "/")
@@ -56,7 +60,7 @@ public class UserController {
 	@PostMapping("/admin/saveUser")
 	public String saveUser(@ModelAttribute("user") User user) {
 		userService.saveUser(user);
-		return "redirect:/";
+		return "redirect:/admin/adminusers";
 	}
 
 	@GetMapping("/admin/{id}/updateUser")
@@ -68,12 +72,12 @@ public class UserController {
 	@PostMapping("/admin/updateUser")
 	public String updateUser(@ModelAttribute("user") User user) {
 		userService.updateUser(user);
-		return "redirect:/";
+		return "redirect:/admin/adminusers";
 	}
 
 	@GetMapping("/admin/deleteUser/{id}")
 	public String deleteUser(@PathVariable("id") Long id){
 		userService.removeUser(id);
-		return "redirect:/";
+		return "redirect:/admin/adminusers";
 	}
 }

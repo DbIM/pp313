@@ -1,6 +1,7 @@
 
 package kata.pp311.security;
 
+import kata.pp311.configuration.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -36,15 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.formLogin()
+                .successHandler(new LoginSuccessHandler());
 
         http.logout()
                 // разрешаем делать логаут всем
                 .permitAll()
-                // указываем URL логаута
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // указываем URL при удачном логауте
-               // .logoutSuccessUrl("/login?logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/login")
+                //.logoutSuccessUrl("http://localhost:8080/login")
                 //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
 
@@ -54,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/updateuser").hasAuthority("ADMIN")
                 .antMatchers("/").permitAll() // доступность всем
                 .antMatchers("/login").permitAll() // доступность всем
+                .antMatchers("/users").hasAuthority("USER")
+                .antMatchers("/userpage").hasAuthority("USER")
                 .and().formLogin();
     }
 
@@ -76,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(encoder());
         return authProvider;
     }
 

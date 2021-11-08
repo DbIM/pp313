@@ -32,11 +32,11 @@ public class AddUserPostscript {
         roleService.saveRole(userRole);
 
         Set<Role> adminRoles = new HashSet<Role>(Collections.singleton(adminRole));
-        User adminUser = new User("admin", "admin", "1", adminRoles);
+        User adminUser = new User("admin", "admin", "$2a$10$O.Ccfq0frGqRnFKI/1LcPeStlEiXy6Ns9xzAtjshxQvlbW6wf6AV.", adminRoles);
         userService.saveUser(adminUser);
 
         Set<Role> userRoles = new HashSet<Role>(Collections.singleton(userRole));
-        User userUser = new User("user", "user", "1", userRoles);
+        User userUser = new User("user", "user", "$2a$10$yOKg96kpME.AmqcVtiO3ve16lPTXWV/2aaix6Ehme1k9QIsIC.j1i", userRoles);
         userService.saveUser(userUser);
     }
 }

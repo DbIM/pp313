@@ -24,9 +24,9 @@
         <td>Name <input type="text" th:field="*{name}"></td>
         <td>Last name <input type="text" th:field="*{lastName}"></td>
         <td>Password <input type="text" th:field="*{password}"></td>
-        <td><input type="submit" value="Ok" onclick="window.location.href = '/adminusers'"></td>
+        <td><input type="submit" value="Ok" onclick="window.location.href = '/admin/adminusers'"></td>
         <td>
-            <form th:action="@{/adminusers}">
+            <form th:action="@{/admin/adminusers}">
                 <input type="submit" value="Return">
             </form>
         </td>
