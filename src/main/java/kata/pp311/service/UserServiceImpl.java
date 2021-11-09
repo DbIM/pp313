@@ -48,10 +48,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void updateUser(User user) {
         User oldUser = userDao.getUserById(user.getId());
         if (oldUser.getPassword().equals(user.getPassword())){
-            user.setPassword(passwordEncoder.encode(oldUser.getPassword()));
+            userDao.updateUser(user);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDao.updateUser(user);
+        else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userDao.updateUser(user);
+        }
     }
 
     @Override
