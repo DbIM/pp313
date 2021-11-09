@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:href="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +33,7 @@
             </tbody>
         </table>
 </h1>
-<center><input type="button" value="Add new user" onclick="window.location.href = 'addUser'">
+<center><a th:href="@{/admin/addUser}">Создание нового пользователя</a>
     <center><input type="button" value="LOGOUT" onclick="window.location.href = 'logout'">
 
 </body>

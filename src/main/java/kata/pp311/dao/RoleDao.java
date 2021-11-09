@@ -5,5 +5,11 @@ import kata.pp311.model.Role;
 import java.util.List;
 
 public interface RoleDao {
-    void save(Role role);
+    List<Role> getAllRoles();
+
+    Role getRoleById(long id);
+
+    Role getByName(String roleName);
+
+    Role save(Role role);
 }

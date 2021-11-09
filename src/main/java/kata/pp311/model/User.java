@@ -1,8 +1,10 @@
 package kata.pp311.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,7 +18,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "increment")
     private Long id;
     @Column (name = "username", unique = true)
-    private String username;
+    private String name;
     @Column (name = "lastname")
     private String lastName;
     @Column (name = "pass")
@@ -32,8 +34,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String lastName, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String name, String lastName, String password, Set<Role> roles) {
+        this.name = name;
         this.lastName = lastName;
         this.password = password;
         this.roles = roles;
@@ -47,12 +49,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return username;
-    }
-
     public void setName(String username) {
-        this.username = username;
+        this.name = username;
     }
 
     public String getLastName() {
@@ -87,7 +85,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

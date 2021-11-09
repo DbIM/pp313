@@ -1,7 +1,11 @@
 package kata.pp311.controller;
 
+import kata.pp311.model.Role;
+import kata.pp311.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import kata.pp311.model.User;
@@ -10,12 +14,24 @@ import kata.pp311.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Controller
 @RequestMapping("")
 public class UserController {
+	private final UserService userService;
+	private final RoleService roleService;
+
 	@Autowired
-	UserService userService;
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	public UserController(UserService userService, RoleService roleService) {
+		this.userService = userService;
+		this.roleService = roleService;
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage() {
@@ -59,6 +75,7 @@ public class UserController {
 
 	@PostMapping("/admin/saveUser")
 	public String saveUser(@ModelAttribute("user") User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userService.saveUser(user);
 		return "redirect:/admin/adminusers";
 	}
@@ -66,11 +83,18 @@ public class UserController {
 	@GetMapping("/admin/{id}/updateUser")
 	public String updateUser(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("user", userService.getUserById(id));
+		model.addAttribute("allRoles", roleService.getAllRoles());
 		return "admin/updateuser";
 	}
 
-	@PostMapping("/admin/updateUser")
-	public String updateUser(@ModelAttribute("user") User user) {
+	@PatchMapping("/admin/updateUser")
+	public String updateUser(@ModelAttribute("user") User user,
+							 @RequestParam("rolesSelected") Long[] rolesId) {
+		Set<Role> roleSet = new HashSet<>();
+		for(Long roleId : rolesId) {
+			roleSet.add(roleService.getRoleById(roleId));
+		}
+		user.setRoles(roleSet);
 		userService.updateUser(user);
 		return "redirect:/admin/adminusers";
 	}
