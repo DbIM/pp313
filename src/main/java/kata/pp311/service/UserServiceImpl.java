@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import kata.pp311.dao.UserDao;
 import kata.pp311.model.User;
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserDao userDao;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
@@ -35,13 +39,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.saveUser(user);
     }
 
     @Override
     @Transactional
-    public User updateUser(User user) {
-        return userDao.updateUser(user);
+    public void updateUser(User user) {
+        User oldUser = userDao.getUserById(user.getId());
+        if (oldUser.getPassword().equals(user.getPassword())){
+            user.setPassword(passwordEncoder.encode(oldUser.getPassword()));
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDao.updateUser(user);
     }
 
     @Override

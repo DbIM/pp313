@@ -3,9 +3,7 @@ package kata.pp311.controller;
 import kata.pp311.model.Role;
 import kata.pp311.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import kata.pp311.model.User;
@@ -23,9 +21,6 @@ import java.util.Set;
 public class UserController {
 	private final UserService userService;
 	private final RoleService roleService;
-
-	@Autowired
-	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public UserController(UserService userService, RoleService roleService) {
@@ -75,7 +70,6 @@ public class UserController {
 
 	@PostMapping("/admin/saveUser")
 	public String saveUser(@ModelAttribute("user") User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userService.saveUser(user);
 		return "redirect:/admin/adminusers";
 	}
