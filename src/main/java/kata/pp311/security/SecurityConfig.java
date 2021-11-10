@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/updateuser").hasAuthority("ADMIN")
                 .antMatchers("/").permitAll() // доступность всем
                 .antMatchers("/login").permitAll() // доступность всем
-                .antMatchers("/users").hasAuthority("USER")
                 .antMatchers("/userpage").hasAuthority("USER")
                 .and().formLogin();
     }

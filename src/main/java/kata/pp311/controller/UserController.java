@@ -4,6 +4,7 @@ import kata.pp311.model.Role;
 import kata.pp311.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import kata.pp311.model.User;
@@ -34,11 +35,6 @@ public class UserController {
 		return "login";
 	}
 
-/*	@RequestMapping(value = "/admin/logout", method = RequestMethod.GET)
-	public String logoutPage() {
-		return "admin/logout";
-	}*/
-
 	@GetMapping(value = "/")
 	public String indexPage() {
 		return "login";
@@ -54,16 +50,20 @@ public class UserController {
 		return "admin/adminusers";
 	}
 
-	@GetMapping(value = "/users")
-	public String getUserPage(ModelMap model) {
-		model.addAttribute("users", userService.getAllUsers());
-		return "users";
+	@GetMapping(value = "/admin/adminuser")
+	public String printAdmin(Model model, Principal principal) {
+		String name = principal.getName();
+		User user = userService.getUserByName(name);
+		model.addAttribute("username", user);
+		return "admin/adminuser";
 	}
 
-	@GetMapping("/{id}")
-	public String showUser (@PathVariable("id") Long id, ModelMap model){
-		model.addAttribute("user", userService.getUserById(id));
-		return "/userpage";
+	@GetMapping(value = "/user")
+	public String printWelcome(Model model, Principal principal ) {
+		String name = principal.getName();
+		User user = userService.getUserByName(name);
+		model.addAttribute("username", user);
+		return "userpage";
 	}
 
 	@GetMapping("/admin/addUser")
@@ -74,16 +74,15 @@ public class UserController {
 	}
 
 	@PostMapping("/admin/saveUser")
-	public String saveUser(@ModelAttribute("user") User user) {
+	public String saveUser(@ModelAttribute("user") User user,
+						   @RequestParam("rolesSelected") Long[] rolesId) {
+		Set<Role> roleSet = new HashSet<>();
+		for(Long roleId : rolesId) {
+			roleSet.add(roleService.getRoleById(roleId));
+		}
+		user.setRoles(roleSet);
 		userService.saveUser(user);
 		return "redirect:/admin/adminusers";
-	}
-
-	@GetMapping("/admin/{id}/updateUser")
-	public String updateUser(@PathVariable("id") Long id, ModelMap model) {
-		model.addAttribute("user", userService.getUserById(id));
-		model.addAttribute("allRoles", roleService.getAllRoles());
-		return "admin/updateuser";
 	}
 
 	@PatchMapping("/admin/updateUser")

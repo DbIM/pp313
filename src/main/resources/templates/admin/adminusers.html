@@ -28,7 +28,7 @@
                 <a class="nav-link active" data-toggle="tab" href="#admin">Admin</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/adminin">User</a>
+                <a class="nav-link" href="/admin/adminuser">User</a>
             </li>
         </ul>
     </div>
@@ -89,8 +89,8 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form class="form-container " th:method="POST"
-                                                              th:action="@{/admin/{id}/updateuser(id=${user.getId()})}" th:object="${user}">
+                                                        <form class="form-container " th:method="PATCH"
+                                                              th:action="@{/admin/updateUser(id=${user.getId()})}" th:object="${user}">
                                                             <div class="modal-body text-center offset-md-2 col-md-8">
                                                                 <div class="form-group">
                                                                     <b>ID </b>
