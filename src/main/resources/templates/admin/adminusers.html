@@ -90,7 +90,7 @@
                                                             </button>
                                                         </div>
                                                         <form class="form-container " th:method="POST"
-                                                              th:action="@{/admin/{id}/edit(id=${user.getId()})}" th:object="${user}">
+                                                              th:action="@{/admin/{id}/updateuser(id=${user.getId()})}" th:object="${user}">
                                                             <div class="modal-body text-center offset-md-2 col-md-8">
                                                                 <div class="form-group">
                                                                     <b>ID </b>
@@ -114,9 +114,10 @@
                                                                 <div class="form-group">
                                                                     <b>Role </b>
                                                                     <br>
-                                                                    <select class="form-control" name="editRoles" multiple size="2" required>
-                                                                        <option value="ADMIN" adminSelect>ADMIN</option>
-                                                                        <option value="USER" userSelect>USER</option>
+                                                                    <select name="rolesSelected" multiple required size="2">
+                                                                        <div  th:each="role : ${allRoles}">
+                                                                            <option th:text="${role.getRole()}" th:value="${role.getId()}" name="roles"/>
+                                                                        </div>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -148,8 +149,8 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form class="form-container " th:method="POST"
-                                                              th:action="@{/admin/{id}(id=${user.id})}" th:object="${user}">
+                                                        <form class="form-container " th:method="GET"
+                                                              th:action="@{/admin/deleteUser/{id}(id=${user.id})}" th:object="${user}">
                                                             <div class="modal-body text-center offset-md-2 col-md-8">
                                                                 <div class="form-group">
                                                                     <b>ID </b>
@@ -168,10 +169,8 @@
                                                                 <div class="form-group">
                                                                     <b>Role</b>
                                                                     <br>
-                                                                    <select class="form-control" name="editRoles" multiple size="2" disabled>
-                                                                        <option value="ADMIN" adminSelect>ADMIN</option>
-                                                                        <option value="USER" userSelect>USER</option>
-                                                                    </select>
+                                                                    <input class="form-control" type="text"
+                                                                           th:value="${user.getRoles()}" name="roles" disabled/>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -202,7 +201,7 @@
                         <tr>
                             <th>
                                 <div class="bg-white text-center">
-                                    <form class="offset-md-4 col-md-4" method="POST" action="/admin/new">
+                                    <form class="offset-md-4 col-md-4" method="POST" action="/admin/saveUser">
                                         <div class="form-group">
                                             <label for="name">First name </label>
                                             <input type="text" class="form-control" name="name" id="name"/>
@@ -218,8 +217,9 @@
                                         <br>
                                         <select class="custom-select" id="editRoles" name="editRoles" multiple size="2"
                                                 required>
-                                            <option value="ADMIN" adminSelect>ADMIN</option>
-                                            <option value="USER" userSelect>USER</option>
+                                            <div  th:each="role : ${allRoles}">
+                                                <option th:text="${role.getRole()}" th:value="${role.getId()}" name="roles"/>
+                                            </div>
                                         </select>
                                         <br><br>
                                         <button type="submit" class="btn btn-success" value="Add">Add new User</button>

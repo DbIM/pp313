@@ -49,6 +49,7 @@ public class UserController {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		model.addAttribute("userAuth", user);
+		model.addAttribute("allRoles", roleService.getAllRoles());
 		model.addAttribute("adminusers", userService.getAllUsers());
 		return "admin/adminusers";
 	}
