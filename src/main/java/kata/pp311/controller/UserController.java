@@ -30,7 +30,7 @@ public class UserController {
 		this.roleService = roleService;
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@GetMapping(value = "/login")
 	public String loginPage() {
 		return "login";
 	}
@@ -66,22 +66,16 @@ public class UserController {
 		return "userpage";
 	}
 
-	@GetMapping("/admin/addUser")
-	public String createUser(ModelMap model) {
-		User user = new User();
-		model.addAttribute("users", user);
-		return "admin/adduser";
-	}
-
 	@PostMapping("/admin/saveUser")
 	public String saveUser(@ModelAttribute("user") User user,
 						   @RequestParam("rolesSelected") Long[] rolesId) {
+		userService.saveUser(user);
 		Set<Role> roleSet = new HashSet<>();
 		for(Long roleId : rolesId) {
 			roleSet.add(roleService.getRoleById(roleId));
 		}
 		user.setRoles(roleSet);
-		userService.saveUser(user);
+		userService.updateUser(user);
 		return "redirect:/admin/adminusers";
 	}
 

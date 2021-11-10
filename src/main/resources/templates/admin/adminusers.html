@@ -213,9 +213,9 @@
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control" name="password" id="password"/>
                                         <br>
-                                        <label for="editRoles">Roles </label>
+                                        <label for="rolesSelected">Roles </label>
                                         <br>
-                                        <select class="custom-select" id="editRoles" name="editRoles" multiple size="2"
+                                        <select class="custom-select" id="rolesSelected" name="rolesSelected" multiple size="2"
                                                 required>
                                             <div  th:each="role : ${allRoles}">
                                                 <option th:text="${role.getRole()}" th:value="${role.getId()}" name="roles"/>
