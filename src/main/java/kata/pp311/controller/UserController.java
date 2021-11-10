@@ -12,6 +12,7 @@ import kata.pp311.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,18 +34,21 @@ public class UserController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/admin/logout", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/admin/logout", method = RequestMethod.GET)
 	public String logoutPage() {
 		return "admin/logout";
-	}
+	}*/
 
 	@GetMapping(value = "/")
 	public String indexPage() {
-		return "index";
+		return "login";
 	}
 
 	@GetMapping(value = "/admin/adminusers")
-	public String getAdminUserPage(ModelMap model) {
+	public String getAdminUserPage(ModelMap model, Principal principal) {
+		String name = principal.getName();
+		User user = userService.getUserByName(name);
+		model.addAttribute("userAuth", user);
 		model.addAttribute("adminusers", userService.getAllUsers());
 		return "admin/adminusers";
 	}
