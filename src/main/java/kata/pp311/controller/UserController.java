@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -96,12 +95,5 @@ public class UserController {
 	public String deleteUser(@PathVariable("id") Long id){
 		userService.removeUser(id);
 		return "redirect:/admin/adminusers";
-	}
-
-
-	//Rest block
-	@GetMapping("/users")
-	public List<User> list() {
-		return userService.getAllUsers();
 	}
 }
