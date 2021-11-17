@@ -18,16 +18,19 @@ public class RestCotroller {
         this.userService = userService;
     }
 
+    //view all users
     @GetMapping("admin/restusers")
     public List<User> list() {
         return userService.getAllUsers();
     }
 
+    //view exact user
     @GetMapping("admin/restusers/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    //create user
     @PostMapping("admin/restusers/saveUser")
     public ResponseEntity<User> addNewUser(@RequestBody User user){
         userService.saveUser(user);
@@ -41,7 +44,8 @@ public class RestCotroller {
         body: JSON.stringify({ name: 'test', lastname: 'test', password: 'test' })
     }
 ).then(result => result.json().then(console.log))*/
-    
+
+    //edit user
     @PutMapping("admin/restusers/updateUser")
     public ResponseEntity<User> update(@RequestBody User user) {
         userService.updateUser(user);
@@ -58,14 +62,14 @@ public class RestCotroller {
 ).then(result => result.json().then(console.log));*/
 
 
-    @DeleteMapping("admin/restusers/{id}/removeUser/")
+    @DeleteMapping("admin/restusers/removeUser/{id}")
     public void delete(@PathVariable Long id) {
         userService.removeUser(id);
     }
 
-/*    @GetMapping("admin/restusers/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }*/
+/*    fetch("/admin/restusers/removeUser/" + 3, {
+        method: "DELETE"
+    });*/
+
+
 }
