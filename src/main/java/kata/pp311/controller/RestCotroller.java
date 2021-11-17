@@ -28,23 +28,37 @@ public class RestCotroller {
         return userService.getUserById(id);
     }
 
-/*    @PostMapping("admin/restusers/saveUser")
-    public void add(@RequestBody User user) {
-        userService.saveUser(user);
-    }*/
-
     @PostMapping("admin/restusers/saveUser")
     public ResponseEntity<User> addNewUser(@RequestBody User user){
         userService.saveUser(user);
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
-
+/*    fetch(
+  '/admin/restusers/saveUser',
+    {
+        method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'test', lastname: 'test', password: 'test' })
+    }
+).then(result => result.json().then(console.log))*/
+    
     @PutMapping("admin/restusers/updateUser")
-    public void update(@RequestBody User user) {
+    public ResponseEntity<User> update(@RequestBody User user) {
         userService.updateUser(user);
+        return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
-    @DeleteMapping("admin/restusers/removeUser/{id}")
+/*    fetch(
+  '/admin/restusers/updateUser',
+    {
+        method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: '1', name: 'Pro', password: 'admin' })
+    }
+).then(result => result.json().then(console.log));*/
+
+
+    @DeleteMapping("admin/restusers/{id}/removeUser/")
     public void delete(@PathVariable Long id) {
         userService.removeUser(id);
     }
