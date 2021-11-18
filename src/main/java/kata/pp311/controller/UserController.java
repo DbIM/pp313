@@ -96,4 +96,9 @@ public class UserController {
 		userService.removeUser(id);
 		return "redirect:/admin/adminusers";
 	}
+
+	@GetMapping(value = "/admin/admintest")
+	public String admin() {
+		return "adminusers";
+	}
 }

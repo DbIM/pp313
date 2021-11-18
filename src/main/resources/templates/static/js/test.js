@@ -4,11 +4,17 @@ async function getAll() {
             response.json().then(data => {
                 let output = " ";
                 data.forEach(user => {
+                    let userRoles = " ";
+                    for (let i = 0; i < user.roles.length; i++) {
+                        userRoles += `${user.roles[i].role} `
+                    }
+                    console.log(userRoles);
                     output += `
                 <tr class="font-weight-normal">
                 <td id="id${user.id}">${user.id}</td>
                 <td id="name${user.id}">${user.name}</td>
-                <td id="email${user.id}">${user.lastName}</td>
+                <td id="lastName${user.id}">${user.lastName}</td>
+                <td id="roles${user.id}">${userRoles}</td>
                 <td>
                 <button class="btn btn-info" role="button" data-toggle="modal" data-target="#edit" 
                 onclick="openModalWindow(${user.id})">Edit</button>
@@ -23,5 +29,4 @@ async function getAll() {
             })
         })
 }
-
 getAll();

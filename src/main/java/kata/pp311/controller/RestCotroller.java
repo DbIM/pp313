@@ -18,13 +18,13 @@ public class RestCotroller {
         this.userService = userService;
     }
 
-    //view all users
+    //read all users
     @GetMapping("admin/restusers")
     public List<User> list() {
         return userService.getAllUsers();
     }
 
-    //view exact user
+    //read user
     @GetMapping("admin/restusers/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUserById(id);
@@ -45,7 +45,7 @@ public class RestCotroller {
     }
 ).then(result => result.json().then(console.log))*/
 
-    //edit user
+    //update user
     @PutMapping("admin/restusers/updateUser")
     public ResponseEntity<User> update(@RequestBody User user) {
         userService.updateUser(user);
@@ -61,7 +61,7 @@ public class RestCotroller {
     }
 ).then(result => result.json().then(console.log));*/
 
-
+    //delete user
     @DeleteMapping("admin/restusers/removeUser/{id}")
     public void delete(@PathVariable Long id) {
         userService.removeUser(id);
