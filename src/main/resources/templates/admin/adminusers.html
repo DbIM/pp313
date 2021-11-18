@@ -90,7 +90,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Last name</label>
-                                            <input type="text" class="form-control" id="surnameAdd"/>
+                                            <input type="text" class="form-control" id="lastnameAdd"/>
                                         </div>
                                         <label>Password</label>
                                         <input type="password" class="form-control" id="passwordAdd"/>
@@ -148,7 +148,7 @@
 
                         <div class="form-group"><label >Last name</label>
                             <div>
-                                <input type="text" class="form-control" id="surname3">
+                                <input type="text" class="form-control" id="lastname3">
                             </div>
                         </div>
 
@@ -204,7 +204,7 @@
 
                         <div class="form-group"><label >Last name</label>
                             <div>
-                                <input type="text" class="form-control" id="surname4">
+                                <input type="text" class="form-control" id="lastname4">
                             </div>
                         </div>
 
@@ -269,6 +269,109 @@
             })
     }
     getAll();
+
+    document.getElementById("addUser").addEventListener("submit", add);
+    function add(e) {
+        e.preventDefault();
+
+        let roles = [];
+        let nameU = document.getElementById("nameAdd").value;
+        let lastnameU = document.getElementById("lastnameAdd").value;
+        let passwordU = document.getElementById("passwordAdd").value;
+        roles = setRoles(Array.from(document.getElementById("roleAdd").selectedOptions)
+            .map(option => option.value));
+
+        console.log(roles)
+
+        fetch("http://localhost:8080/admin/restusers/saveUser", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify({
+                name: nameU,
+                lastName: lastnameU,
+                password: passwordU,
+                roles: roles
+
+            })
+        })
+            .finally(() => {
+                document.getElementById("start").click();
+                getAll();
+                document.getElementById("addUser").reset();
+            })
+    }
+
+    function setRoles(someRoles) {
+        let roles = [];
+        if (someRoles.indexOf("ADMIN") >= 0) {
+            roles.push({"id": 1, "name": "USER"});
+        }
+        if (someRoles.indexOf("USER") >= 0) {
+            roles.push({"id": 2, "name": "ADMIN"});
+        }
+        return roles;
+    }
+
+    document.getElementById("deleteModal").addEventListener("submit", deleteUser)
+
+    function deleteUser(e) {
+        e.preventDefault();
+        let id = document.getElementById("id3").value;
+        fetch("http://localhost:8080/admin/restusers/removeUser/" + id, {
+            method: "DELETE"
+        })
+            .finally(() => {
+                document.getElementById("delete").click();
+                getAll();
+                document.getElementById("deleteModal").reset();
+            })
+    }
+
+    function openModalWindowDel(id) {
+        document.getElementById("id3").value = id;
+        document.getElementById("name3").value = $("#name" + id).text();
+        document.getElementById("lastname3").value = $("#lastName" + id).text();
+    }
+
+    document.getElementById("editModal").addEventListener("submit", edit);
+
+    function edit(e) {
+        e.preventDefault();
+
+        let rolesU = [];
+        let idU = document.getElementById("id4").value;
+        let nameU = document.getElementById("name4").value;
+        let lastnameU = document.getElementById("lastname4").value;
+        let passwordU = document.getElementById("password4").value;
+        rolesU = setRoles(Array.from(document.getElementById("role4").selectedOptions)
+            .map(option => option.value));
+
+        console.log(rolesU)
+
+        fetch("http://localhost:8080/admin/restusers/updateUser/", {
+            method: "PUT",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify({
+                id: idU,
+                name: nameU,
+                lastName: lastnameU,
+                password: passwordU,
+                roles: rolesU
+            })
+        })
+            .finally(() => {
+                document.getElementById("edit").click();
+                getAll();
+                document.getElementById("editModal").reset();
+            })
+    }
+
+    function openModalWindow(id) {
+        document.getElementById("id4").value = id;
+        document.getElementById("name4").value = $("#name" + id).text();
+        document.getElementById("lastname4").value = $("#lastName" + id).text();
+        document.getElementById("password4").value = $("#password" + id).val();
+    }
 </script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
